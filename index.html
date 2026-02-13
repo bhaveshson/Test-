@@ -24,17 +24,130 @@
   </div>
 </div>
 
-<!-- 🎵 Music Selector -->
-<div class="music-box">
-  <label>🎵 Choose our song:</label>
-  <select id="musicSelect">
-    <option value="">-- Select Romantic Song --</option>
-    <option value="song1">Romantic Piano</option>
-    <option value="song2">Soft Love Theme</option>
-    <option value="song3">Cute Romantic Tune</option>
-  </select>
+<!-- 🎵 Romantic Music -->
+<audio id="bgMusic" loop autoplay>
+  <source src="https://cdn.pixabay.com/audio/2022/03/15/audio_c8c8a73467.mp3" type="audio/mpeg">
+</audio>
+
+<!-- 🥹 Poem -->
+<div class="poem-box">
+  <p id="typingPoem"></p>
 </div>
 
+<div class="buttons">
+  <button id="yesBtn">YES 😍</button>
+  <button id="noBtn">NO 😢</button>
+</div>
+
+<div id="message">
+  Yayyyyy ❤️ <span id="herName"></span> just made my day!!! 🎉💞
+</div>
+
+<script>
+// ❤️ Get name from URL
+const params = new URLSearchParams(window.location.search);
+const herName = params.get("name") || "Nandini";
+
+// Update title + message
+document.getElementById("mainTitle").innerHTML =
+  `Will You Be My Valentine, ${herName}? 💖`;
+
+document.getElementById("herName").innerText = herName;
+
+// 🎵 Mobile autoplay fix
+document.body.addEventListener("click", () => {
+  const music = document.getElementById("bgMusic");
+  music.play().catch(() => {});
+}, { once: true });
+
+// Buttons
+const noBtn = document.getElementById("noBtn");
+const yesBtn = document.getElementById("yesBtn");
+const message = document.getElementById("message");
+
+// 😈 NO escapes + shrinks
+let noScale = 1;
+
+noBtn.addEventListener("mouseover", () => {
+  const x = Math.random() * (window.innerWidth - 100);
+  const y = Math.random() * (window.innerHeight - 50);
+  noBtn.style.left = x + "px";
+  noBtn.style.top = y + "px";
+
+  noScale -= 0.1;
+  if (noScale > 0.3) {
+    noBtn.style.transform = `scale(${noScale})`;
+  }
+});
+
+// 💖 YES click
+yesBtn.addEventListener("click", () => {
+  message.style.display = "block";
+
+  document.body.style.background =
+    "radial-gradient(circle at center, #2b001f, #000)";
+
+  createHeartBurst();
+  createFloatingHearts();
+});
+
+// 🎆 Heart burst
+function createHeartBurst() {
+  for (let i = 0; i < 20; i++) {
+    const heart = document.createElement("div");
+    heart.innerHTML = "💖";
+    heart.className = "heart-burst";
+    heart.style.left = (window.innerWidth / 2) + "px";
+    heart.style.top = (window.innerHeight / 2) + "px";
+    document.body.appendChild(heart);
+    setTimeout(() => heart.remove(), 2000);
+  }
+}
+
+// 💗 Floating hearts
+function createFloatingHearts() {
+  for (let i = 0; i < 12; i++) {
+    const heart = document.createElement("div");
+    heart.innerHTML = "💗";
+    heart.className = "romantic-heart";
+    heart.style.left = Math.random() * window.innerWidth + "px";
+    heart.style.top = window.innerHeight + "px";
+    document.body.appendChild(heart);
+
+    setTimeout(() => heart.remove(), 4000);
+  }
+}
+
+// 🥹 Typing poem (UNCHANGED — your version)
+const poemText = `${herName}, from the moment you smiled at me,
+my world became brighter than the stars ✨
+If you stay with me forever,
+I promise to guard your heart forever ❤️`;
+
+let i = 0;
+function typePoem() {
+  if (i < poemText.length) {
+    document.getElementById("typingPoem").innerHTML += poemText.charAt(i);
+    i++;
+    setTimeout(typePoem, 40);
+  }
+}
+typePoem();
+
+// 🌹 Falling petals
+const petalsContainer = document.querySelector(".petals");
+
+for (let i = 0; i < 28; i++) {
+  const petal = document.createElement("div");
+  petal.className = "petal";
+  petal.style.left = Math.random() * 100 + "vw";
+  petal.style.animationDuration = (6 + Math.random() * 6) + "s";
+  petalsContainer.appendChild(petal);
+}
+</script>
+
+</body>
+</html>
 <audio id="bgMusic" loop></audio>
 
 <!-- 🥹 Poem -->
