@@ -3,169 +3,156 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>For You 💖</title>
-
-<!-- ✅ External CSS -->
+<title>For Someone Special ❤️</title>
 <link rel="stylesheet" href="style.css">
-
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet">
 </head>
 
 <body>
 
-<div class="card">
+<!-- 🌹 Falling Petals -->
+<div class="petals"></div>
 
-  <!-- 📸 Slideshow -->
-  <div class="slideshow">
-    <img id="slideImg" src="">
+<h1 id="mainTitle">Will You Be My Valentine? 💖</h1>
+
+<!-- 💑 Couple Scene -->
+<div class="couple-scene">
+  <div class="moon"></div>
+  <div class="couple">
+    <div class="boy"></div>
+    <div class="girl"></div>
+    <div class="heart-float">❤</div>
   </div>
-
-  <!-- 💌 Title -->
-  <h1 id="title">Will You Be My Valentine? 💖</h1>
-
-  <!-- 🥹 Poem Section -->
-  <div class="poemBox">
-    <button id="readHeartBtn">💌 Read My Heart</button>
-    <div id="typedPoem" class="typedPoem"></div>
-  </div>
-
-  <!-- ❤️ Buttons -->
-  <div class="buttons">
-    <button id="yesBtn">YES 😍</button>
-    <button id="noBtn">NO 😢</button>
-  </div>
-
-  <!-- 🎉 Success Message -->
-  <div id="message">YAYYY ❤️ You just made me the happiest person!!! 🥹💞</div>
-
 </div>
 
-<!-- 🎵 Music -->
-<audio id="bgMusic" loop>
-  <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mp3">
-</audio>
+<!-- 🎵 Music Selector -->
+<div class="music-box">
+  <label>🎵 Choose our song:</label>
+  <select id="musicSelect">
+    <option value="">-- Select Romantic Song --</option>
+    <option value="song1">Romantic Piano</option>
+    <option value="song2">Soft Love Theme</option>
+    <option value="song3">Cute Romantic Tune</option>
+  </select>
+</div>
 
-<!-- 🎊 Confetti library -->
-<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+<audio id="bgMusic" loop></audio>
+
+<!-- 🥹 Poem -->
+<div class="poem-box">
+  <p id="typingPoem"></p>
+</div>
+
+<div class="buttons">
+  <button id="yesBtn">YES 😍</button>
+  <button id="noBtn">NO 😢</button>
+</div>
+
+<div id="message">
+  Yayyyyy ❤️ <span id="herName"></span> just made my day!!! 🎉💞
+  <br><br>
+  <button id="shareBtn">📱 Tell WhatsApp</button>
+</div>
 
 <script>
-// 💌 Name from URL
+// ❤️ Get name from URL
 const params = new URLSearchParams(window.location.search);
-const name = params.get("name") || "Nandini";
-document.getElementById("title").innerHTML =
-  `Will You Be My Valentine, ${name}? 💖`;
+const herName = params.get("name") || "Nandini";
 
-// 📸 Romantic slideshow photos
-const photos = [
-  "https://images.unsplash.com/photo-1518199266791-5375a83190b7",
-  "https://images.unsplash.com/photo-1519681393784-d120267933ba",
-  "https://images.unsplash.com/photo-1501908734255-16579c18c25f",
-  "https://images.unsplash.com/photo-1517841905240-472988babdf9"
-];
+// Update title + message
+document.getElementById("mainTitle").innerHTML =
+  `Will You Be My Valentine, ${herName}? 💖`;
 
-let i = 0;
-const slide = document.getElementById("slideImg");
-slide.src = photos[0];
+document.getElementById("herName").innerText = herName;
 
-setInterval(() => {
-  i = (i + 1) % photos.length;
-  slide.src = photos[i];
-}, 2200);
+// 🎵 Music
+const musicSelect = document.getElementById("musicSelect");
+const bgMusic = document.getElementById("bgMusic");
 
-// 🎵 autoplay after first tap
-document.body.addEventListener("click", () => {
-  document.getElementById("bgMusic").play();
-}, { once: true });
+const songs = {
+  song1: "https://cdn.pixabay.com/audio/2022/03/15/audio_c8c8a73467.mp3",
+  song2: "https://cdn.pixabay.com/audio/2022/10/25/audio_946c0d1c8d.mp3",
+  song3: "https://cdn.pixabay.com/audio/2022/11/03/audio_2b4c0d9f3b.mp3"
+};
 
-// 🧠 Personalized poem
-const poemText =
-`From the moment you smiled at me 💫
-My world felt softer instantly…
-
-${name}, you’re my little piece of art 🎨
-The calm, the chaos, the beat of my heart 💓
-
-So here I am, a little shy, a little true…
-Just hoping someday… it’s me and you 💖`;
-
-let typed = false;
-document.getElementById("readHeartBtn").addEventListener("click", () => {
-  if (typed) return;
-  typed = true;
-
-  const el = document.getElementById("typedPoem");
-  let j = 0;
-
-  function type() {
-    if (j < poemText.length) {
-      el.innerHTML += poemText.charAt(j);
-      j++;
-      setTimeout(type, 35);
-    }
+musicSelect.addEventListener("change", () => {
+  const selected = musicSelect.value;
+  if (songs[selected]) {
+    bgMusic.src = songs[selected];
+    bgMusic.play().catch(() => {});
   }
-  type();
 });
 
-// 🔥 NO button escape + YES grow
-let noScale = 1;
-let yesScale = 1;
+// Buttons
 const noBtn = document.getElementById("noBtn");
 const yesBtn = document.getElementById("yesBtn");
+const message = document.getElementById("message");
 
-function moveNo() {
-  noScale -= 0.12;
-  if (noScale < 0.35) noScale = 0.35;
-  noBtn.style.transform = `scale(${noScale}) rotate(${Math.random()*360}deg)`;
+// 😈 NO escapes + shrinks
+let noScale = 1;
 
-  yesScale += 0.08;
-  yesBtn.style.transform = `scale(${yesScale})`;
-
-  const x = Math.random() * (window.innerWidth - 120);
-  const y = Math.random() * (window.innerHeight - 120);
+noBtn.addEventListener("mouseover", () => {
+  const x = Math.random() * (window.innerWidth - 100);
+  const y = Math.random() * (window.innerHeight - 50);
   noBtn.style.left = x + "px";
   noBtn.style.top = y + "px";
-}
 
-noBtn.addEventListener("mouseover", moveNo);
-noBtn.addEventListener("touchstart", moveNo);
-
-// 🎉 YES celebration + WhatsApp
-yesBtn.addEventListener("click", () => {
-  document.getElementById("message").style.display = "block";
-  confetti({ particleCount: 300, spread: 140 });
-
-  setTimeout(() => {
-    const msg = `I said YES ❤️🥹`;
-    const url = `https://wa.me/?text=${encodeURIComponent(msg)}`;
-    window.open(url, "_blank");
-  }, 1800);
+  noScale -= 0.1;
+  if (noScale > 0.3) {
+    noBtn.style.transform = `scale(${noScale})`;
+  }
 });
 
-// 💖 floating hearts
-function heart() {
-  const h = document.createElement("div");
-  h.className = "heart";
-  h.innerHTML = "💖";
-  h.style.left = Math.random() * 100 + "vw";
-  h.style.fontSize = (20 + Math.random() * 25) + "px";
-  h.style.animationDuration = (4 + Math.random() * 3) + "s";
-  document.body.appendChild(h);
-  setTimeout(() => h.remove(), 6000);
-}
-setInterval(heart, 450);
+// 💖 YES click
+yesBtn.addEventListener("click", () => {
+  message.style.display = "block";
+  createHeartBurst();
+});
 
-// 🌹 falling petals
-function createPetal(){
-  const p=document.createElement("div");
-  p.className="petal";
-  p.innerHTML="🌹";
-  p.style.left=Math.random()*100+"vw";
-  p.style.fontSize=(16+Math.random()*20)+"px";
-  p.style.animationDuration=(5+Math.random()*4)+"s";
-  document.body.appendChild(p);
-  setTimeout(()=>p.remove(),9000);
+// 🎆 Heart burst
+function createHeartBurst() {
+  for (let i = 0; i < 20; i++) {
+    const heart = document.createElement("div");
+    heart.innerHTML = "💖";
+    heart.className = "heart-burst";
+    heart.style.left = (window.innerWidth / 2) + "px";
+    heart.style.top = (window.innerHeight / 2) + "px";
+    document.body.appendChild(heart);
+    setTimeout(() => heart.remove(), 2000);
+  }
 }
-setInterval(createPetal,900);
+
+// 📱 WhatsApp share
+document.getElementById("shareBtn").addEventListener("click", () => {
+  const text = encodeURIComponent(`${herName} said YES to me! ❤️🥹`);
+  window.open(`https://wa.me/?text=${text}`, "_blank");
+});
+
+// 🥹 Typing poem with her name
+const poemText = `${herName}, from the moment you smiled at me,
+my world became brighter than the stars ✨
+If you stay with me forever,
+I promise to guard your heart forever ❤️`;
+
+let i = 0;
+function typePoem() {
+  if (i < poemText.length) {
+    document.getElementById("typingPoem").innerHTML += poemText.charAt(i);
+    i++;
+    setTimeout(typePoem, 40);
+  }
+}
+typePoem();
+
+// 🌹 Falling petals
+const petalsContainer = document.querySelector(".petals");
+
+for (let i = 0; i < 25; i++) {
+  const petal = document.createElement("div");
+  petal.className = "petal";
+  petal.style.left = Math.random() * 100 + "vw";
+  petal.style.animationDuration = (5 + Math.random() * 5) + "s";
+  petalsContainer.appendChild(petal);
+}
 </script>
 
 </body>
