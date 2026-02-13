@@ -10,6 +10,17 @@ body {
 
 h1 {
   margin-top: 60px;
+  font-size: 2.2rem;
+}
+
+/* Buttons */
+button {
+  padding: 15px 30px;
+  font-size: 18px;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  margin: 10px;
 }
 
 /* YES glow */
@@ -25,28 +36,21 @@ h1 {
   100% { box-shadow: 0 0 10px #ff4d6d; }
 }
 
-button {
-  padding: 15px 30px;
-  font-size: 18px;
-  border: none;
-  border-radius: 30px;
-  cursor: pointer;
-  margin: 10px;
-}
-
+/* NO button */
 #noBtn {
   background: white;
   color: #ff4d6d;
   position: absolute;
 }
 
+/* Message */
 #message {
   margin-top: 30px;
   font-size: 22px;
   display: none;
 }
 
-/* 🌹 Petals */
+/* 🌹 Realistic petals */
 .petals {
   position: fixed;
   top: 0;
@@ -59,16 +63,20 @@ button {
 .petal {
   position: absolute;
   top: -20px;
-  width: 12px;
-  height: 18px;
-  background: #ff4d6d;
+  width: 14px;
+  height: 20px;
+  background: radial-gradient(circle at 30% 30%, #ff8fab, #ff4d6d);
   border-radius: 50%;
-  opacity: 0.8;
+  opacity: 0.9;
   animation: fall linear infinite;
+  filter: blur(0.3px);
 }
 
 @keyframes fall {
-  to {
+  0% {
+    transform: translateY(-10vh) rotate(0deg);
+  }
+  100% {
     transform: translateY(110vh) rotate(360deg);
   }
 }
@@ -78,6 +86,7 @@ button {
   margin-top: 20px;
   color: #ffd6e0;
   padding: 0 20px;
+  min-height: 80px;
 }
 
 /* 🎆 Heart burst */
@@ -94,12 +103,21 @@ button {
   }
 }
 
-/* 📱 Share */
-#shareBtn {
-  padding: 10px 20px;
-  border-radius: 20px;
-  background: #25d366;
-  color: white;
-  font-weight: bold;
-  cursor: pointer;
+/* 💗 Floating hearts */
+.romantic-heart {
+  position: fixed;
+  font-size: 22px;
+  animation: floatRomantic 4s linear forwards;
+  pointer-events: none;
+}
+
+@keyframes floatRomantic {
+  0% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-600px) scale(1.6);
+    opacity: 0;
+  }
 }
